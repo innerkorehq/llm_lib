@@ -10,6 +10,7 @@ from .exceptions import (
     InvalidRequestError,
     LLMTimeoutError,
 )
+from .tag_manager import TagManager
 
 __all__ = [
     "CompletionProvider",
@@ -20,4 +21,5 @@ __all__ = [
     "ModelNotAvailableError",
     "InvalidRequestError",
     "LLMTimeoutError",
+    "TagManager",
 ]

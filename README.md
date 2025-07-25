@@ -12,6 +12,7 @@ A Python library for LLM text completion using LiteLLM with Gemini flash 2.5 and
   - Converting Shadcn components to TypeScript
   - Finding tags for landing pages
   - Generating JSON data based on schemas
+- Built-in landing page tagging system with CLI tools
 
 ## Installation
 
@@ -88,13 +89,17 @@ print(metadata)
 ```python
 from llm_completion.implementations import LandingPageTagFinder
 
-# Initialize the tag finder
-tag_finder = LandingPageTagFinder()
+# Initialize the tag finder (use built-in tag data, no API calls needed)
+tag_finder = LandingPageTagFinder(use_api=False)
 
 # Find tags
 components = ["Hero", "Features", "Pricing", "Testimonials", "FAQ", "CTA", "Footer"]
 tags = tag_finder.find_tags(components, count=5)
 print(tags)
+
+# Get recommended tags for a specific component
+hero_tags = tag_finder.get_tags_for_component("Hero")
+print(hero_tags)
 ```
 
 ### Generating JSON Data
@@ -123,6 +128,50 @@ data = generator.generate_data(
     num_examples=3
 )
 print(data)
+```
+
+## Tag Management System
+
+The library includes a comprehensive tag management system for landing page components, with no need for API calls:
+
+```python
+from llm_completion.tag_manager import TagManager
+
+# Initialize the tag manager
+tag_manager = TagManager()
+
+# Search for tags
+mobile_tags = tag_manager.search_tags("mobile")
+print(mobile_tags)
+
+# Get recommended component combinations
+components = tag_manager.get_component_combinations(count=5, focus="conversion")
+print(components)
+
+# Create a balanced set of tags for a component
+tags = tag_manager.create_tag_set("hero", additional_count=3)
+print(tags)
+```
+
+## Command Line Interface
+
+The library provides a command-line interface for tag management:
+
+```bash
+# Search for tags
+python -m llm_completion tags search mobile
+
+# List recommended components
+python -m llm_completion tags list --count=5 --focus=conversion
+
+# Get tags for a component
+python -m llm_completion tags tags Hero
+
+# Export tag data
+python -m llm_completion tags export --format=json --output=tags.json
+
+# Analyze landing page components
+python -m llm_completion tags analyze --components=components.json
 ```
 
 ## Error Handling
