@@ -24,7 +24,7 @@ class ShadcnToTypeScriptConverter:
             "You are a TypeScript expert specializing in React component conversion."
         )
 
-    def convert(self, component_code: str) -> Tuple[str, str, Dict[str, Any]]:
+    def convert(self, component_code: str) -> Dict[str, Any]:
         """Convert a Shadcn component to TypeScript.
 
         Args:
@@ -43,66 +43,24 @@ class ShadcnToTypeScriptConverter:
             "Convert any button to anchor tag with href prop and make href a required prop.\n"
             "Extract the user visible things like Text, Button, URL, Image, etc as props. \n"
             "Ensure that the component is compatible with TypeScript and follows best practices for type definitions.\n"
-            "Create Props in separate file.\n"
+            "Create Props in same file.\n"
             "Handle Icons properly - if component uses icons, make sure they're imported from react-icons packages.\n\n"
             f"{component_code}\n\n"
-            "Also give json for component name and component props name in following format,\n\n"
+            "Give only json for component ts code, component name, props_file_name and component props name in following format,\n\n"
             "{\n"
             '"name": "<component name>",\n'
+            '"component_ts_code": "<component ts code>",\n'
             '"props": "<component props name>",\n'
             '"props_file_name": "<component props file name>"\n'
             "}\n"
         )
 
         try:
-            result = self.completion_provider.complete(prompt, self.system_prompt)
-            
-            # Extract the TypeScript component code
-            ts_component_code = extract_code_from_markdown(result, "tsx")
-            if not ts_component_code:
-                ts_component_code = extract_code_from_markdown(result, "typescript")
-            if not ts_component_code:
-                ts_component_code = extract_code_from_markdown(result, "ts")
-            
-            # Extract the Props file content
-            props_file_content = extract_code_from_markdown(result, "ts")
-            
-            # If props_file_content is the same as ts_component_code, we need a different approach
-            if props_file_content == ts_component_code:
-                # Try to find separate code blocks
-                blocks = re.findall(r"```(?:tsx|ts|typescript)\n([\s\S]+?)\n```", result)
-                if len(blocks) >= 2:
-                    ts_component_code = blocks[0]
-                    props_file_content = blocks[1]
-            
-            # Extract the JSON metadata
-            metadata_str = extract_code_from_markdown(result, "json")
-            if not metadata_str:
-                # Try to find JSON content without code block
-                import re
-                json_pattern = r'\{[\s\S]*?"name"[\s\S]*?"props"[\s\S]*?"props_file_name"[\s\S]*?\}'
-                match = re.search(json_pattern, result)
-                if match:
-                    metadata_str = match.group(0)
-            
-            # Parse JSON metadata
-            try:
-                metadata = json.loads(metadata_str) if metadata_str else {}
-            except json.JSONDecodeError:
-                logger.warning("Failed to parse metadata JSON, using empty dict")
-                metadata = {}
-            
-            # Validate results
-            if not ts_component_code:
-                raise ValueError("Failed to extract TypeScript component code")
-                
-            # If props file content is empty but we have component code, try to extract props
-            if not props_file_content and ts_component_code:
-                props_file_content = self._extract_props_from_component(ts_component_code, metadata)
+            result = self.completion_provider.complete_with_json(prompt, self.system_prompt)
             
             logger.info("Successfully converted component to TypeScript")
             
-            return ts_component_code, props_file_content, metadata
+            return result
             
         except Exception as e:
             logger.error(f"Failed to convert component to TypeScript: {str(e)}")
