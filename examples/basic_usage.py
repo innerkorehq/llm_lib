@@ -46,21 +46,158 @@ def main():
         # # )
         # # print(json_result)
         
-        # # Shadcn to TypeScript example
-        # print("\n===== Shadcn to TypeScript =====")
-        # converter = ShadcnToTypeScriptConverter()
-        # component_code = """
-        # import { useEffect, useMemo, useState } from \"react\";\nimport { motion } from \"framer-motion\";\nimport { MoveRight, PhoneCall } from \"lucide-react\";\nimport { Button } from \"@/components/ui/button\";\n\nfunction Hero() {\n  const [titleNumber, setTitleNumber] = useState(0);\n  const titles = useMemo(\n    () =\u003E [\"amazing\", \"new\", \"wonderful\", \"beautiful\", \"smart\"],\n    []\n  );\n\n  useEffect(() =\u003E {\n    const timeoutId = setTimeout(() =\u003E {\n      if (titleNumber === titles.length - 1) {\n        setTitleNumber(0);\n      } else {\n        setTitleNumber(titleNumber + 1);\n      }\n    }, 2000);\n    return () =\u003E clearTimeout(timeoutId);\n  }, [titleNumber, titles]);\n\n  return (\n    \u003Cdiv className=\"w-full\"\u003E\n      \u003Cdiv className=\"container mx-auto\"\u003E\n        \u003Cdiv className=\"flex gap-8 py-20 lg:py-40 items-center justify-center flex-col\"\u003E\n          \u003Cdiv\u003E\n            \u003CButton variant=\"secondary\" size=\"sm\" className=\"gap-4\"\u003E\n              Read our launch article \u003CMoveRight className=\"w-4 h-4\" /\u003E\n            \u003C/Button\u003E\n          \u003C/div\u003E\n          \u003Cdiv className=\"flex gap-4 flex-col\"\u003E\n            \u003Ch1 className=\"text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular\"\u003E\n              \u003Cspan className=\"text-spektr-cyan-50\"\u003EThis is something\u003C/span\u003E\n              \u003Cspan className=\"relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1\"\u003E\n                &nbsp;\n                {titles.map((title, index) =\u003E (\n                  \u003Cmotion.span\n                    key={index}\n                    className=\"absolute font-semibold\"\n                    initial={{ opacity: 0, y: \"-100\" }}\n                    transition={{ type: \"spring\", stiffness: 50 }}\n                    animate={\n                      titleNumber === index\n                        ? {\n                            y: 0,\n                            opacity: 1,\n                          }\n                        : {\n                            y: titleNumber \u003E index ? -150 : 150,\n                            opacity: 0,\n                          }\n                    }\n                  \u003E\n                    {title}\n                  \u003C/motion.span\u003E\n                ))}\n              \u003C/span\u003E\n            \u003C/h1\u003E\n\n            \u003Cp className=\"text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center\"\u003E\n              Managing a small business today is already tough. Avoid further\n              complications by ditching outdated, tedious trade methods. Our\n              goal is to streamline SMB trade, making it easier and faster than\n              ever.\n            \u003C/p\u003E\n          \u003C/div\u003E\n          \u003Cdiv className=\"flex flex-row gap-3\"\u003E\n            \u003CButton size=\"lg\" className=\"gap-4\" variant=\"outline\"\u003E\n              Jump on a call \u003CPhoneCall className=\"w-4 h-4\" /\u003E\n            \u003C/Button\u003E\n            \u003CButton size=\"lg\" className=\"gap-4\"\u003E\n              Sign up here \u003CMoveRight className=\"w-4 h-4\" /\u003E\n            \u003C/Button\u003E\n          \u003C/div\u003E\n        \u003C/div\u003E\n      \u003C/div\u003E\n    \u003C/div\u003E\n  );\n}\n\nexport { Hero };\n
-        # """
-        # ts_component, props_file, metadata = converter.convert(component_code)
-        # print("TypeScript Component:")
-        # print(ts_component)
-        # print("\nProps File:")
-        # print(props_file)
-        # print("\nMetadata:")
-        # print(metadata)
-        
-        # Landing page tags example
+        # Shadcn to TypeScript example
+        print("\n===== Shadcn to TypeScript =====")
+        converter = ShadcnToTypeScriptConverter()
+        component_code = """
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Mockup } from "@/components/ui/mockup"
+import { Glow } from "@/components/ui/glow"
+
+interface HeroWithMockupProps {
+  title: string
+  description: string
+  primaryCta?: {
+    text: string
+    href: string
+  }
+  secondaryCta?: {
+    text: string
+    href: string
+    icon?: React.ReactNode
+  }
+  mockupImage: {
+    src: string
+    alt: string
+    width: number
+    height: number
+  }
+  className?: string
+}
+
+export function HeroWithMockup({
+  title,
+  description,
+  primaryCta = {
+    text: "Get Started",
+    href: "/get-started",
+  },
+  secondaryCta = {
+    text: "GitHub",
+    href: "https://github.com/your-repo",
+    icon: <GitHubIcon className="mr-2 h-4 w-4" />,
+  },
+  mockupImage,
+  className,
+}: HeroWithMockupProps) {
+  return (
+    <section
+      className={cn(
+        "relative bg-background text-foreground",
+        "py-12 px-4 md:py-24 lg:py-32",
+        "overflow-hidden",
+        className,
+      )}
+    >
+      <div className="relative mx-auto max-w-[1280px] flex flex-col gap-12 lg:gap-24">
+        <div className="relative z-10 flex flex-col items-center gap-6 pt-8 md:pt-16 text-center lg:gap-12">
+          {/* Heading */}
+          <h1
+            className={cn(
+              "inline-block animate-appear",
+              "bg-gradient-to-b from-foreground via-foreground/90 to-muted-foreground",
+              "bg-clip-text text-transparent",
+              "text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl",
+              "leading-[1.1] sm:leading-[1.1]",
+              "drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+            )}
+          >
+            {title}
+          </h1>
+
+          {/* Description */}
+          <p
+            className={cn(
+              "max-w-[550px] animate-appear opacity-0 [animation-delay:150ms]",
+              "text-base sm:text-lg md:text-xl",
+              "text-muted-foreground",
+              "font-medium",
+            )}
+          >
+            {description}
+          </p>
+
+          {/* CTAs */}
+          <div
+            className="relative z-10 flex flex-wrap justify-center gap-4 
+            animate-appear opacity-0 [animation-delay:300ms]"
+          >
+            <Button
+              asChild
+              size="lg"
+              className={cn(
+                "bg-gradient-to-b from-brand to-brand/90 dark:from-brand/90 dark:to-brand/80",
+                "hover:from-brand/95 hover:to-brand/85 dark:hover:from-brand/80 dark:hover:to-brand/70",
+                "text-white shadow-lg",
+                "transition-all duration-300",
+              )}
+            >
+              <a href={primaryCta.href}>{primaryCta.text}</a>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              variant="ghost"
+              className={cn(
+                "text-foreground/80 dark:text-foreground/70",
+                "transition-all duration-300",
+              )}
+            >
+              <a href={secondaryCta.href}>
+                {secondaryCta.icon}
+                {secondaryCta.text}
+              </a>
+            </Button>
+          </div>
+
+          {/* Mockup */}
+          <div className="relative w-full pt-12 px-4 sm:px-6 lg:px-8">
+            <Mockup
+              className={cn(
+                "animate-appear opacity-0 [animation-delay:700ms]",
+                "shadow-[0_0_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_0_50px_-12px_rgba(255,255,255,0.1)]",
+                "border-brand/10 dark:border-brand/5",
+              )}
+            >
+              <img
+                {...mockupImage}
+                className="w-full h-auto"
+                loading="lazy"
+                decoding="async"
+              />
+            </Mockup>
+          </div>
+        </div>
+      </div>
+
+      {/* Background Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <Glow
+          variant="above"
+          className="animate-appear-zoom opacity-0 [animation-delay:1000ms]"
+        />
+      </div>
+    </section>
+  )
+}
+        """
+        result = converter.convert(component_code)
+        print("Results are:")
+        print(json.dumps(result, indent=2))
+
+        # # Landing page tags example
         # print("\n===== Landing Page Tags =====")
         # tag_finder = LandingPageTagFinder()
         # components = ["Hero", "Features", "Pricing", "Testimonials", "FAQ", "CTA", "Footer", "Navbar"]
@@ -68,83 +205,83 @@ def main():
         # print(tags)
         
         # JSON generator example
-        print("\n===== JSON Generator =====")
-        generator = JsonSchemaDataGenerator()
-        schema = {
-  "type": "object",
-  "properties": {
-    "badge": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string"
-        },
-        "action": {
-          "type": "object",
-          "properties": {
-            "text": {
-              "type": "string"
-            },
-            "href": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "actions": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "text": {
-            "type": "string"
-          },
-          "href": {
-            "type": "string"
-          },
-          "icon": {
-            "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered."
-          },
-          "variant": {
-            "enum": [
-              "default",
-              "glow"
-            ],
-            "type": "string"
-          }
-        }
-      }
-    },
-    "image": {
-      "type": "object",
-      "properties": {
-        "light": {
-          "type": "string"
-        },
-        "dark": {
-          "type": "string"
-        },
-        "alt": {
-          "type": "string"
-        }
-      }
-    }
-  },
-  "$schema": "http://json-schema.org/draft-07/schema#"
-}
-        data = generator.generate_data(
-            schema,
-            "Create hero section for a landing page of oneclosure.com",
-            num_examples=1
-        )
-        print(json.dumps(data, indent=2))
+#         print("\n===== JSON Generator =====")
+#         generator = JsonSchemaDataGenerator()
+#         schema = {
+#   "type": "object",
+#   "properties": {
+#     "badge": {
+#       "type": "object",
+#       "properties": {
+#         "text": {
+#           "type": "string"
+#         },
+#         "action": {
+#           "type": "object",
+#           "properties": {
+#             "text": {
+#               "type": "string"
+#             },
+#             "href": {
+#               "type": "string"
+#             }
+#           }
+#         }
+#       }
+#     },
+#     "title": {
+#       "type": "string"
+#     },
+#     "description": {
+#       "type": "string"
+#     },
+#     "actions": {
+#       "type": "array",
+#       "items": {
+#         "type": "object",
+#         "properties": {
+#           "text": {
+#             "type": "string"
+#           },
+#           "href": {
+#             "type": "string"
+#           },
+#           "icon": {
+#             "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered."
+#           },
+#           "variant": {
+#             "enum": [
+#               "default",
+#               "glow"
+#             ],
+#             "type": "string"
+#           }
+#         }
+#       }
+#     },
+#     "image": {
+#       "type": "object",
+#       "properties": {
+#         "light": {
+#           "type": "string"
+#         },
+#         "dark": {
+#           "type": "string"
+#         },
+#         "alt": {
+#           "type": "string"
+#         }
+#       }
+#     }
+#   },
+#   "$schema": "http://json-schema.org/draft-07/schema#"
+# }
+#         data = generator.generate_data(
+#             schema,
+#             "Create hero section for a landing page of oneclosure.com",
+#             num_examples=1
+#         )
+#         print(json.dumps(data, indent=2))
 
     except APIKeyError as e:
         print(f"API Key Error: {str(e)}")

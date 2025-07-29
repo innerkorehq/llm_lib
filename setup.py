@@ -7,13 +7,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="llm-completion",
-    version="0.1.0",
-    author="innerkoreDev",
-    author_email="example@example.com",
+    version="0.1.1",
+    author="innerkore",
+    author_email="gagan@innerkore.com",
     description="A library for LLM text completion using LiteLLM",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/llm-completion",
+    url="https://github.com/innerkorehq/llm_lib",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -51,7 +51,6 @@ class ShadcnToTypeScriptConverter:
             '"name": "<component name>",\n'
             '"component_ts_code": "<component ts code>",\n'
             '"props": "<component props name>",\n'
-            '"props_file_name": "<component props file name>"\n'
             "}\n"
         )
 
