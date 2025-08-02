@@ -22,6 +22,163 @@ class ShadcnToTypeScriptConverter:
         self.completion_provider = completion_provider or LiteLLMCompletion()
         self.system_prompt = (
             "You are a TypeScript expert specializing in React component conversion."
+            """
+            Here's a comprehensive tagging system for shadcn components in a landing page context, designed for scalability, searchability, and maintainability:
+
+### **1. Primary Structural Tags (Mandatory)**
+The main section identifier:
+- `hero`  
+- `header`  
+- `footer`  
+- `navigation`  
+- `cta` (Call-to-Action)  
+- `testimonials`  
+- `features`  
+- `pricing`  
+- `faq`  
+- `contact`  
+- `team`  
+- `stats` (Metrics/KPIs)  
+- `newsletter`  
+- `banner`  
+- `gallery`  
+- `partners` (Logo cloud)  
+- `showcase` (Product demo)  
+- `process` (How it works)  
+
+---
+
+### **2. Component Function Tags**
+Describes the component's purpose:
+- `action-trigger` (Buttons, links)  
+- `data-display` (Stats, progress bars)  
+- `content-container` (Cards, modals)  
+- `form-element` (Inputs, selectors)  
+- `feedback` (Alerts, toasts)  
+- `navigation-element` (Breadcrumbs, pagination)  
+- `social-proof` (Testimonials, trust badges)  
+- `disclosure` (Accordions, tooltips)  
+- `media-display` (Image/video players)  
+- `state-indicator` (Loaders, status badges)  
+
+---
+
+### **3. Content Type Tags**
+Content the component holds:
+- `text-heavy`  
+- `visual-dominant` (Images/video focus)  
+- `icon-based`  
+- `form`  
+- `interactive-element`  
+- `data-visualization`  
+- `mixed-media`  
+
+---
+
+### **4. Styling & Theme Tags**
+Visual characteristics:
+- `minimalist`  
+- `bold`  
+- `dark-mode`  
+- `gradient`  
+- `glassmorphism`  
+- `neumorphic`  
+- `skeuomorphic`  
+- `flat-design`  
+- `animated`  
+- `gradient-border`  
+- `shadow-heavy`  
+- `rounded`  
+
+---
+
+### **5. Technical Behavior Tags**
+Functional attributes:
+- `responsive-mobile`  
+- `responsive-desktop`  
+- `interactive` (Hover/click effects)  
+- `static`  
+- `dynamic-content` (API-driven)  
+- `lazy-loaded`  
+- `fixed-position`  
+- `sticky-element`  
+- `accessibility-optimized`  
+- `performance-critical`  
+
+---
+
+### **6. Placement Context Tags**
+Where it appears:
+- `above-fold`  
+- `below-fold`  
+- `full-width`  
+- `container-bound`  
+- `floating-element`  
+- `section-divider`  
+- `overlay`  
+
+---
+
+### **7. Marketing Purpose Tags**
+Business objectives:
+- `lead-generation`  
+- `conversion-focused`  
+- `brand-awareness`  
+- `product-highlight`  
+- `trust-building`  
+- `engagement`  
+- `scarcity-timer`  
+
+---
+
+### **8. Component Complexity Tags**
+Development effort:
+- `simple`  
+- `composite` (Multiple sub-components)  
+- `animated-complex`  
+- `custom-integration` (3rd party libs)  
+- `theme-variant`  
+
+---
+
+### **9. Audience Stage Tags**
+User journey alignment:
+- `awareness-stage`  
+- `consideration-stage`  
+- `decision-stage`  
+- `retention-focused`  
+
+---
+
+### **Example Tagging in Practice**
+**Hero Section Component:**  
+`hero` | `action-trigger` | `visual-dominant` | `animated` | `above-fold` | `conversion-focused` | `awareness-stage`
+
+**Pricing Card Component:**  
+`pricing` | `content-container` | `text-heavy` | `neumorphic` | `interactive` | `decision-stage` | `conversion-focused`
+
+**Testimonial Slider:**  
+`testimonials` | `social-proof` | `mixed-media` | `responsive-mobile` | `trust-building` | `consideration-stage`
+
+---
+
+### **Implementation Tips**
+1. **Consistency:** Use a controlled vocabulary (tag dictionary)  
+2. **Priority:** Assign 1 primary tag + 2-5 secondary tags  
+3. **Automation:** Generate tags from component props (e.g. `<Button animated responsive cta />`)  
+4. **Filtering:** Enable multi-axis filtering (e.g. `function=cta` + `style=glassmorphism`)  
+5. **Visual Indicators:** Color-code tag categories in your design system  
+
+This structure supports:  
+- Design consistency audits  
+- A/B test component selection  
+- Responsive behavior filtering  
+- Personalization workflows  
+- Component discovery for developers  
+- Marketing goal tracking  
+
+Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 secondary tags for each component. This ensures clarity while allowing flexibility in categorization.
+"""
         )
 
     def convert(self, component_code: str) -> Dict[str, Any]:
@@ -46,11 +203,13 @@ class ShadcnToTypeScriptConverter:
             "Create Props in same file.\n"
             "Handle Icons properly - if component uses icons, make sure they're imported from react-icons packages.\n\n"
             f"{component_code}\n\n"
-            "Give only json for component ts code, component name, props_file_name and component props name in following format,\n\n"
+            "Give only json for component ts code, component name, props_file_name, component props name, category and tags in following format,\n\n"
             "{\n"
             '"name": "<component name>",\n'
             '"component_ts_code": "<component ts code>",\n'
             '"props": "<component props name>",\n'
+            '"category": "<component category>",\n'
+            '"tags": "[<component tags>]"'
             "}\n"
         )
 
