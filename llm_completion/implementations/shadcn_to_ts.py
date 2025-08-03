@@ -209,7 +209,7 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             '"component_ts_code": "<component ts code>",\n'
             '"props": "<component props name>",\n'
             '"category": "<component category>",\n'
-            '"tags": "[<component tags>]"'
+            '"tags": "<json array of component tags>"'
             "}\n"
         )
 
