@@ -17,14 +17,14 @@ class Config:
         # Gemini settings
         self.gemini_api_key = os.getenv("GEMINI_API_KEY", "")
         self.gemini_model = os.getenv("GEMINI_MODEL", "models/gemini-flash-2.5")
-        self.gemini_max_retries = int(os.getenv("GEMINI_MAX_RETRIES", "3"))
-        self.gemini_timeout = int(os.getenv("GEMINI_TIMEOUT", "30"))
+        self.gemini_max_retries = int(os.getenv("GEMINI_MAX_RETRIES", "2"))
+        self.gemini_timeout = int(os.getenv("GEMINI_TIMEOUT", "60"))
 
         # OpenAI settings (fallback)
         self.openai_api_key = os.getenv("OPENAI_API_KEY", "")
         self.openai_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-        self.openai_max_retries = int(os.getenv("OPENAI_MAX_RETRIES", "3"))
-        self.openai_timeout = int(os.getenv("OPENAI_TIMEOUT", "30"))
+        self.openai_max_retries = int(os.getenv("OPENAI_MAX_RETRIES", "2"))
+        self.openai_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))
 
         # General settings
         self.max_tokens = int(os.getenv("MAX_TOKENS", "4096"))
