@@ -201,6 +201,8 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             "Extract the user visible things like Text, Button, URL, Image, etc as props. \n"
             "Ensure that the component is compatible with TypeScript and follows best practices for type definitions.\n"
             "Create Props in same file.\n"
+            "Replace any hardcoded user visible values (including href, alt, src, etc), demo data, mockups, etc with appropriate props types, if required.\n"
+            "Remove default values. Props will handle those cases.\n"
             "Handle Icons properly - if component uses icons, make sure they're imported from react-icons packages.\n\n"
             f"{component_code}\n\n"
             "Give only json for component ts code, component name, props_file_name, component props name, category and tags in following format,\n\n"
