@@ -37,7 +37,7 @@ class LandingPageTagFinder:
     def find_tags(
         self, 
         components: List[str], 
-        count: int = 5,
+        count: int = 9,
         focus: Optional[str] = None
     ) -> List[str]:
         """Find appropriate tags for a landing page from a list of components.
