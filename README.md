@@ -94,7 +94,7 @@ tag_finder = LandingPageTagFinder(use_api=False)
 
 # Find tags
 components = ["Hero", "Features", "Pricing", "Testimonials", "FAQ", "CTA", "Footer"]
-tags = tag_finder.find_tags(components, count=5)
+tags = tag_finder.get_category_tags_map(components, count=5)
 print(tags)
 
 # Get recommended tags for a specific component

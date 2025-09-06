@@ -193,16 +193,22 @@ export function HeroWithMockup({
   )
 }
         """
-        result = converter.convert(component_code)
-        print("Results are:")
-        print(json.dumps(result, indent=2))
+        # result = converter.convert(component_code)
+        # print("Results are:")
+        # print(json.dumps(result, indent=2))
 
-        # # Landing page tags example
-        # print("\n===== Landing Page Tags =====")
-        # tag_finder = LandingPageTagFinder()
-        # components = ["Hero", "Features", "Pricing", "Testimonials", "FAQ", "CTA", "Footer", "Navbar"]
-        # tags = tag_finder.find_tags(components, count=5)
-        # print(tags)
+        # Landing page tags example
+        print("\n===== Landing Page Tags =====")
+        tag_finder = LandingPageTagFinder()
+        user_input = """
+        Landing Page Goal: generate-leads
+Target Audience: b2b
+Product Type: digital-product
+Product Name: MarketingKore
+Description: MarketingKore is an AI marketing tool. That will provide landing page creation in the starting and grow it into more AI tools such as AI Forms, AI Websites, etc
+        """
+        tags = tag_finder.get_category_tags_map(user_input=user_input, count=5)
+        print(tags)
         
         # JSON generator example
 #         print("\n===== JSON Generator =====")

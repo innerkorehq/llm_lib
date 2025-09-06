@@ -55,7 +55,7 @@ class JsonSchemaDataGenerator:
         prompt = (
             f"Generate {num_examples} examples of JSON data that conform to the following schema(s):\n\n"
             f"{schemas_str}\n\n"
-            f"Additional requirements: {user_prompt}\n\n"
+            f"Additional requirements: \n{user_prompt}\n\n"
             "Fill image assets with Unsplash stock images you know exist.\n"
             "Use icons for svgs or logos if component requires them. Return icons as a JSON dict with "
             "fields 'package' (react-icons package name) and 'name' (icon name), e.g., "
