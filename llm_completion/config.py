@@ -16,7 +16,7 @@ class Config:
 
         # Gemini settings
         self.gemini_api_key = os.getenv("GEMINI_API_KEY", "")
-        self.gemini_model = os.getenv("GEMINI_MODEL", "models/gemini-flash-2.5")
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini/gemini-2.5-flash")
         self.gemini_max_retries = int(os.getenv("GEMINI_MAX_RETRIES", "2"))
         self.gemini_timeout = int(os.getenv("GEMINI_TIMEOUT", "60"))
 
