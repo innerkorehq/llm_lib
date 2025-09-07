@@ -165,7 +165,7 @@ class LiteLLMCompletion(CompletionProvider):
                 "json_schema": {
                     "name": "json_data_generation",
                     "schema": json_schema,
-                    "strict": True
+                    "strict": False
                 },
             }
 
