@@ -6,6 +6,28 @@ import json
 from ..completion import LiteLLMCompletion
 from ..logger import logger
 
+def merge_schemas_with_allof(schemas: list, title: str = "Merged Schema", description: str = "This schema is a combination of multiple schemas.") -> dict:
+    """
+    Combines a list of JSON schemas into a single schema using the 'allOf' keyword.
+
+    This is the most robust and recommended method for combining schemas, as it
+    preserves the validation rules of each individual schema.
+
+    Args:
+        schemas: A list of dictionaries, where each dictionary is a JSON schema.
+        title: An optional title for the new merged schema.
+        description: An optional description for the new merged schema.
+
+    Returns:
+        A new dictionary representing the combined JSON schema.
+    """
+    merged_schema = {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": title,
+        "description": description,
+        "allOf": schemas
+    }
+    return merged_schema
 
 class JsonSchemaDataGenerator:
     """Generator for JSON data based on schemas."""
@@ -49,8 +71,10 @@ class JsonSchemaDataGenerator:
             schemas_list = [schemas]
         else:
             schemas_list = schemas
-            
-        schemas_str = json.dumps(schemas_list, indent=2)
+
+        merged_schema = merge_schemas_with_allof(schemas_list)
+
+        schemas_str = json.dumps(merged_schema, indent=2)
         
         prompt = (
             f"Generate {num_examples} examples of JSON data that conform to the following schema(s):\n\n"
@@ -65,7 +89,9 @@ class JsonSchemaDataGenerator:
         )
 
         try:
-            result = self.completion_provider.complete_with_json(prompt, self.system_prompt)
+            # Define JSON schema for the response
+            
+            result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=merged_schema)
             
             # Ensure result is a list
             if not isinstance(result, list):

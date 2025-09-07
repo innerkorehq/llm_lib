@@ -129,13 +129,14 @@ class LiteLLMCompletion(CompletionProvider):
         raise CompletionError(error_msg)
 
     def complete_with_json(
-        self, prompt: str, system_prompt: Optional[str] = None, **kwargs: Any
+        self, prompt: str, system_prompt: Optional[str] = None, json_schema: Optional[Dict[str, Any]] = None, **kwargs: Any
     ) -> Dict[str, Any]:
         """Generate JSON completion using LiteLLM with fallback support.
 
         Args:
             prompt: The user prompt to generate completion for.
             system_prompt: Optional system instructions.
+            json_schema: Optional JSON schema to validate the response format.
             **kwargs: Additional parameters to pass to LiteLLM.
 
         Returns:
@@ -152,6 +153,14 @@ class LiteLLMCompletion(CompletionProvider):
         
         if system_prompt:
             json_system_prompt = f"{system_prompt}\n\n{json_system_prompt}"
+            
+        # Set up response format for JSON schema if provided
+        if json_schema:
+            kwargs["response_format"] = {
+                "type": "json_schema",
+                "json_schema": json_schema,
+                "strict": True
+            }
 
         # Get completion with enhanced JSON instruction
         try:

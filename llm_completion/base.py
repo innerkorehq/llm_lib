@@ -28,13 +28,14 @@ class CompletionProvider(ABC):
 
     @abstractmethod
     def complete_with_json(
-        self, prompt: str, system_prompt: Optional[str] = None, **kwargs: Any
+        self, prompt: str, system_prompt: Optional[str] = None, json_schema: Optional[Dict[str, Any]] = None, **kwargs: Any
     ) -> Dict[str, Any]:
         """Generate a JSON completion for the given prompt.
 
         Args:
             prompt: The user prompt to generate completion for.
             system_prompt: Optional system instructions.
+            json_schema: Optional JSON schema to validate the response format.
             **kwargs: Additional parameters to pass to the completion provider.
 
         Returns:

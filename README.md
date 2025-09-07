@@ -59,6 +59,32 @@ json_result = completion.complete_with_json(
     "List the planets in the solar system with their key characteristics"
 )
 print(json_result)
+
+# Generate a JSON completion with schema validation
+schema = {
+    "type": "object",
+    "properties": {
+        "planets": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "type": {"type": "string"},
+                    "diameter": {"type": "number"},
+                    "hasRings": {"type": "boolean"}
+                },
+                "required": ["name", "type"]
+            }
+        }
+    }
+}
+
+json_result_with_schema = completion.complete_with_json(
+    "List the planets in the solar system with their key characteristics",
+    json_schema=schema
+)
+print(json_result_with_schema)
 ```
 
 ## Specialized Implementations

@@ -218,11 +218,28 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
                 f"1. Select at least {count} components\n"
                 "2. Choose components that logically work together\n"
                 "3. Return only a valid JSON object of component names\n\n"
-                "4. It should return category_tags_map: Dictionary mapping categories to their relevant tags e.g.\n"
-                "category1: [tag1, tag2], category2: [tag3, tag4], ...\n"
-                "JSON object:"
+                "4. It should return category_tags_map: List of dict mapping category and tags e.g.\n"
+                "[{category: category1, tags: [tag1, tag2]}, {category: category2, tags: [tag3, tag4]}, ...]\n"
             )
-            result = self.completion_provider.complete_with_json(prompt, self.system_prompt)
+            
+            # Define schema for the response
+            schema = {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "category": {"type": "string"},
+                        "tags": {
+                            "type": "array",
+                            "items": {"type": "string"}
+                        }
+                    },
+                    "required": ["category", "tags"]
+                }
+            }
+
+            
+            result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schema)
 
         except Exception as e:
             logger.error(f"API approach failed for finding landing page tags: {str(e)}")

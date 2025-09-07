@@ -216,7 +216,20 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
         )
 
         try:
-            result = self.completion_provider.complete_with_json(prompt, self.system_prompt)
+            # Define schema for TypeScript interface response
+            schema = {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "component_ts_code": {"type": "string"},
+                    "props": {"type": "string"},
+                    "category": {"type": "string"},
+                    "tags": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["name", "component_ts_code", "props", "category", "tags"]
+            }
+            
+            result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schema)
             
             logger.info("Successfully converted component to TypeScript")
             

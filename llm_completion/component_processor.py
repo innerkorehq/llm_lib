@@ -147,8 +147,22 @@ class ComponentProcessor:
         system_prompt = "You are an expert at identifying React icons in component code."
         
         try:
+            # Define schema for icon result
+            schema = {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "package": {"type": "string"},
+                        "name": {"type": "string"},
+                        "usage": {"type": "string"}
+                    },
+                    "required": ["package", "name"]
+                }
+            }
+            
             # Use JSON completion to directly get structured data
-            result = self.completion_provider.complete_with_json(prompt, system_prompt)
+            result = self.completion_provider.complete_with_json(prompt, system_prompt, json_schema=schema)
             
             # Ensure result is a list
             if isinstance(result, list):
@@ -248,7 +262,25 @@ class ComponentProcessor:
                 )
                 
                 try:
-                    code_analysis = self.completion_provider.complete_with_json(code_analysis_prompt)
+                    # Define schema for code analysis
+                    analysis_schema = {
+                        "type": "object",
+                        "properties": {
+                            "primary_tag": {"type": "string"},
+                            "additional_tags": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            },
+                            "complexity": {"type": "string", "enum": ["simple", "medium", "complex"]},
+                            "features": {
+                                "type": "array", 
+                                "items": {"type": "string"}
+                            }
+                        },
+                        "required": ["primary_tag"]
+                    }
+                    
+                    code_analysis = self.completion_provider.complete_with_json(code_analysis_prompt, json_schema=analysis_schema)
                     
                     if isinstance(code_analysis, dict):
                         primary_tag = code_analysis.get("primary_tag", "")
