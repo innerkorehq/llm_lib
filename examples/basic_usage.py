@@ -39,12 +39,41 @@ def main():
         # result = completion.complete("Explain quantum computing in simple terms")
         # print(result)
         
-        # # JSON completion example
-        # print("\n===== JSON Completion =====")
-        # # json_result = completion.complete_with_json(
-        # #     "List 3 planets in our solar system with their key features"
-        # # )
-        # # print(json_result)
+        # JSON completion example
+        print("\n===== JSON Completion =====")
+        # json_result = completion.complete_with_json(
+        #     "List 3 planets in our solar system with their key features"
+        # )
+        # print(json_result)
+        
+        # JSON completion with schema example
+        print("\n===== JSON Completion with Schema =====")
+        schema = {
+            "type": "object",
+            "properties": {
+                "planets": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "diameter_km": {"type": "number"},
+                            "has_rings": {"type": "boolean"},
+                            "description": {"type": "string"}
+                        },
+                        "required": ["name", "diameter_km", "has_rings"]
+                    }
+                }
+            },
+            "required": ["planets"]
+        }
+        
+        # Uncomment to run example
+        # json_result_with_schema = completion.complete_with_json(
+        #     "List 3 planets in our solar system with their key features",
+        #     json_schema=schema
+        # )
+        # print(json.dumps(json_result_with_schema, indent=2))
         
         # Shadcn to TypeScript example
         print("\n===== Shadcn to TypeScript =====")
@@ -75,6 +104,11 @@ interface HeroWithMockupProps {
   }
   className?: string
 }
+        # The ShadcnToTypeScriptConverter internally uses complete_with_json with json_schema
+        # to ensure consistent TypeScript interface generation
+        # result = converter.convert(component_code)
+        # print("Results are:")
+        # print(json.dumps(result, indent=2))
 
 export function HeroWithMockup({
   title,
@@ -192,12 +226,14 @@ export function HeroWithMockup({
     </section>
   )
 }
-        """
+"""
+
         # result = converter.convert(component_code)
         # print("Results are:")
         # print(json.dumps(result, indent=2))
 
         # Landing page tags example
+        
         print("\n===== Landing Page Tags =====")
         tag_finder = LandingPageTagFinder()
         user_input = """
@@ -207,87 +243,98 @@ Product Type: digital-product
 Product Name: MarketingKore
 Description: MarketingKore is an AI marketing tool. That will provide landing page creation in the starting and grow it into more AI tools such as AI Forms, AI Websites, etc
         """
-        tags = tag_finder.get_category_tags_map(user_input=user_input, count=5)
-        print(tags)
+        # The LandingPageTagFinder now uses complete_with_json with a json_schema parameter
+        # to enforce consistent output structure with categories and tags
+        # tags = tag_finder.get_category_tags_map(user_input=user_input, count=5)
+        # print(json.dumps(tags, indent=2))
+        
         
         # JSON generator example
-#         print("\n===== JSON Generator =====")
-#         generator = JsonSchemaDataGenerator()
-#         schema = {
-#   "type": "object",
-#   "properties": {
-#     "badge": {
-#       "type": "object",
-#       "properties": {
-#         "text": {
-#           "type": "string"
-#         },
-#         "action": {
-#           "type": "object",
-#           "properties": {
-#             "text": {
-#               "type": "string"
-#             },
-#             "href": {
-#               "type": "string"
-#             }
-#           }
-#         }
-#       }
-#     },
-#     "title": {
-#       "type": "string"
-#     },
-#     "description": {
-#       "type": "string"
-#     },
-#     "actions": {
-#       "type": "array",
-#       "items": {
-#         "type": "object",
-#         "properties": {
-#           "text": {
-#             "type": "string"
-#           },
-#           "href": {
-#             "type": "string"
-#           },
-#           "icon": {
-#             "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered."
-#           },
-#           "variant": {
-#             "enum": [
-#               "default",
-#               "glow"
-#             ],
-#             "type": "string"
-#           }
-#         }
-#       }
-#     },
-#     "image": {
-#       "type": "object",
-#       "properties": {
-#         "light": {
-#           "type": "string"
-#         },
-#         "dark": {
-#           "type": "string"
-#         },
-#         "alt": {
-#           "type": "string"
-#         }
-#       }
-#     }
-#   },
-#   "$schema": "http://json-schema.org/draft-07/schema#"
-# }
-#         data = generator.generate_data(
-#             schema,
-#             "Create hero section for a landing page of oneclosure.com",
-#             num_examples=1
-#         )
-#         print(json.dumps(data, indent=2))
+        print("\n===== JSON Generator =====")
+        generator = JsonSchemaDataGenerator()
+        component_schema = {
+          "badge": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "action": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "href": {
+                    "type": "string"
+                  }
+                },
+                "required": ["text", "href"],
+                "additionalProperties": False
+              }
+            },
+            "required": ["text", "action"],
+            "additionalProperties": False
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "object",
+                  "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered.",
+                  "additionalProperties": False
+                },
+                "variant": {
+                  "enum": [
+                    "default",
+                    "glow"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": ["text", "href", "variant"],
+              "additionalProperties": False
+            }
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "light": {
+                "type": "string"
+              },
+              "dark": {
+                "type": "string"
+              },
+              "alt": {
+                "type": "string"
+              }
+            },
+            "required": ["light", "dark", "alt"],
+            "additionalProperties": False
+          }
+        }
+        
+        # This will internally use complete_with_json with the json_schema parameter
+        data = generator.generate_data(
+            component_schema,
+            "Create hero section for a landing page of oneclosure.com",
+            num_examples=1
+        )
+        print(json.dumps(data, indent=2))
 
     except APIKeyError as e:
         print(f"API Key Error: {str(e)}")

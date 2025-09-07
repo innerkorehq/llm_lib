@@ -6,7 +6,7 @@ import json
 from ..completion import LiteLLMCompletion
 from ..logger import logger
 
-def merge_schemas_with_allof(schemas: list, title: str = "Merged Schema", description: str = "This schema is a combination of multiple schemas.") -> dict:
+def merge_schemas(schemas: dict) -> dict:
     """
     Combines a list of JSON schemas into a single schema using the 'allOf' keyword.
 
@@ -15,18 +15,17 @@ def merge_schemas_with_allof(schemas: list, title: str = "Merged Schema", descri
 
     Args:
         schemas: A list of dictionaries, where each dictionary is a JSON schema.
-        title: An optional title for the new merged schema.
-        description: An optional description for the new merged schema.
 
     Returns:
         A new dictionary representing the combined JSON schema.
     """
     merged_schema = {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "title": title,
-        "description": description,
-        "allOf": schemas
+        "type": "object",
+        "properties": schemas,
+        "additionalProperties": False,
+        "required": list(schemas.keys())
     }
+    
     return merged_schema
 
 class JsonSchemaDataGenerator:
@@ -47,10 +46,10 @@ class JsonSchemaDataGenerator:
 
     def generate_data(
         self, 
-        schemas: Union[Dict[str, Any], List[Dict[str, Any]]], 
+        schemas: Dict[str, Any], 
         user_prompt: str,
         num_examples: int = 1
-    ) -> List[Dict[str, Any]]:
+    ) -> Dict[str, Any]:
         """Generate JSON data based on provided schemas.
 
         Args:
@@ -59,51 +58,38 @@ class JsonSchemaDataGenerator:
             num_examples: Number of examples to generate.
 
         Returns:
-            List of generated JSON data objects.
+            A single JSON data object with predefined keys from the schema.
 
         Raises:
             Exception: If data generation fails.
         """
-        logger.info(f"Generating data for {len(schemas) if isinstance(schemas, list) else 1} schemas")
-        
-        # Convert single schema to list for consistent handling
-        if isinstance(schemas, dict):
-            schemas_list = [schemas]
-        else:
-            schemas_list = schemas
+        logger.info(f"Generating data for {len(schemas.keys())} schemas")
 
-        merged_schema = merge_schemas_with_allof(schemas_list)
+        merged_schema = merge_schemas(schemas)
+        print("merged_schema:", merged_schema)
 
-        schemas_str = json.dumps(merged_schema, indent=2)
         
         prompt = (
-            f"Generate {num_examples} examples of JSON data that conform to the following schema(s):\n\n"
-            f"{schemas_str}\n\n"
+            f"Generate {num_examples} examples of JSON data"
             f"Additional requirements: \n{user_prompt}\n\n"
             "Fill image assets with Unsplash stock images you know exist.\n"
             "Use icons for svgs or logos if component requires them. Return icons as a JSON dict with "
             "fields 'package' (react-icons package name) and 'name' (icon name), e.g., "
             "{'package': 'react-icons/fa', 'name': 'FaUser'}. Only use known icons from react-icons.\n\n"
-            "Return ONLY valid JSON data that matches the schema(s) provided. "
-            "Format as a list of JSON objects, even if there's only one example."
+            "Return ONLY valid JSON data that matches the schema(s) provided."
         )
 
         try:
             # Define JSON schema for the response
-            
+            print("prompt:", prompt)
+
             result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=merged_schema)
-            
-            # Ensure result is a list
-            if not isinstance(result, list):
-                if isinstance(result, dict):
-                    result = [result]
-                else:
-                    raise ValueError(f"Expected a list or dict, got {type(result)}")
+            print("Generated JSON data:", result)            
             
             # Process the data to ensure all image and icon fields are properly formatted
             processed_result = self._process_generated_data(result)
             
-            logger.info(f"Successfully generated {len(processed_result)} data examples")
+            logger.info("Successfully generated data")
             
             return processed_result
             
@@ -111,22 +97,17 @@ class JsonSchemaDataGenerator:
             logger.error(f"Failed to generate JSON data: {str(e)}")
             raise
     
-    def _process_generated_data(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _process_generated_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Process generated data to ensure proper formatting for images and icons.
 
         Args:
-            data: List of generated data objects.
+            data: A data object with predefined keys.
 
         Returns:
-            List of processed data objects.
+            Processed data object.
         """
-        processed_data = []
-        
-        for item in data:
-            processed_item = self._process_item(item)
-            processed_data.append(processed_item)
-            
-        return processed_data
+        # Process the dictionary object
+        return self._process_item(data)
     
     def _process_item(self, item: Any) -> Any:
         """Recursively process an item to format images and icons.

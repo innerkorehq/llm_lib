@@ -33,6 +33,7 @@ class LiteLLMCompletion(CompletionProvider):
 
     def __init__(self) -> None:
         """Initialize the completion provider."""
+
         self.providers = []
         
         # Add Gemini if API key is available
@@ -81,9 +82,12 @@ class LiteLLMCompletion(CompletionProvider):
                 
                 provider_params = config.get_litellm_params(provider)
                 provider_params.update(kwargs)
-                
+
+                print("messages:", messages)
+                print("provider_params:", provider_params)
                 response = litellm.completion(
                     messages=messages,
+                    drop_params=True,
                     **provider_params
                 )
                 
@@ -158,14 +162,21 @@ class LiteLLMCompletion(CompletionProvider):
         if json_schema:
             kwargs["response_format"] = {
                 "type": "json_schema",
-                "json_schema": json_schema,
-                "strict": True
+                "json_schema": {
+                    "name": "json_data_generation",
+                    "schema": json_schema,
+                    "strict": True
+                },
             }
 
         # Get completion with enhanced JSON instruction
         try:
+            print("json_system_prompt:", json_system_prompt)
+            print("prompt:", prompt)
+            print("kwargs:", kwargs)
             result = self.complete(prompt, json_system_prompt, **kwargs)
-            
+            print("result:", result)
+
             # Try to extract JSON from the response if it contains markdown code block
             if "```json" in result:
                 try:
