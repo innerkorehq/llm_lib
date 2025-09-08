@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="llm-completion",
-    version="0.1.2",
+    version="0.1.3",
     author="innerkore",
     author_email="gagan@innerkore.com",
     description="A library for LLM text completion using LiteLLM",
