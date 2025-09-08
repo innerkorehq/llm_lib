@@ -64,8 +64,8 @@ class JsonSchemaDataGenerator:
         """
         logger.info(f"Generating data for {len(schemas.keys())} schemas")
 
-        merged_schema = merge_schemas(schemas)
-        print("merged_schema:", merged_schema)
+        # merged_schema = merge_schemas(schemas)
+        # print("merged_schema:", merged_schema)
 
         
         prompt = (
@@ -82,7 +82,7 @@ class JsonSchemaDataGenerator:
             # Define JSON schema for the response
             print("prompt:", prompt)
 
-            result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=merged_schema)
+            result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schemas)
             print("Generated JSON data:", result)            
             
             # Process the data to ensure all image and icon fields are properly formatted
