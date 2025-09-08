@@ -22,8 +22,7 @@ def merge_schemas(schemas: dict) -> dict:
     merged_schema = {
         "type": "object",
         "properties": schemas,
-        "additionalProperties": False,
-        "required": list(schemas.keys())
+        "additionalProperties": False
     }
     
     return merged_schema
