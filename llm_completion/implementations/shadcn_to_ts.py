@@ -23,7 +23,62 @@ class ShadcnToTypeScriptConverter:
         self.system_prompt = (
             "You are a TypeScript expert specializing in React component conversion."
             """
-            Here's a comprehensive tagging system for shadcn components in a landing page context, designed for scalability, searchability, and maintainability:
+For Icon Components:
+    1. Following interface should be used:
+        interface Icon {
+        package: 'lucide';
+        name: string; // known lucide react icon-name only
+        type: 'icon';
+        className: string; // tailwind classes for styling
+        }
+    2. Following will be the usage example:
+    
+        import DynamicIcon from "@/components/DynamicIcon";
+        
+        <DynamicIcon name="Home" className="my-tailwind-classes" />
+
+For Image Components:
+    1. Following interface should be used:
+        interface ImageProps {
+            src: string;
+            alt: string;
+            width: number;
+            height: number;
+            priority?: boolean;
+            quality?: number;
+            sizes?: string;
+            fill?: boolean;
+            className?: string;
+            placeholder?: string;
+        }
+    2. Following will be the usage example:
+    
+        import Image from "@/components/Image";
+
+        <Image
+            src="/path/to/image.jpg"
+            alt="Description of image"
+            width={500}
+            height={300}
+            className="my-tailwind-classes"
+            placeholder="placeholder text"
+        />
+
+For Link Components:
+    1. Following interface should be used:
+        interface LinkProps {
+            href: string;
+            target?: '_blank' | '_self';
+            className?: string;
+            rel?: string;
+        }
+    2. Every Anchor tag should use the following structure:
+        import Link from "@/components/Link";
+        <Link href="your-link-here" className="your-tailwind-classes" target="_blank" rel="noopener noreferrer">
+        </Link>
+"""
+"""
+Here's a comprehensive tagging system for shadcn components in a landing page context, designed for scalability, searchability, and maintainability:
 
 ### **1. Primary Structural Tags (Mandatory)**
 The main section identifier:
@@ -163,8 +218,8 @@ User journey alignment:
 ---
 
 ### **Implementation Tips**
-1. **Consistency:** Use a controlled vocabulary (tag dictionary)  
-2. **Priority:** Assign 1 primary tag + 2-5 secondary tags  
+1. **Consistency:** Use a controlled vocabulary (tag dictionary)
+2. **Priority:** Assign 1 primary tag + 2-5 secondary tags
 3. **Automation:** Generate tags from component props (e.g. `<Button animated responsive cta />`)  
 4. **Filtering:** Enable multi-axis filtering (e.g. `function=cta` + `style=glassmorphism`)  
 5. **Visual Indicators:** Color-code tag categories in your design system  
@@ -211,7 +266,7 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             '"component_ts_code": "<component ts code>",\n'
             '"props": "<component props name>",\n'
             '"category": "<component category>",\n'
-            '"tags": "<comma separated component tags>"'
+            '"tags": "<comma separated component tags>",\n'
             "}\n"
         )
 
@@ -226,8 +281,9 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
                     "category": {"type": "string"},
                     "tags": {"type": "array", "items": {"type": "string"}},
                 },
-                "required": ["name", "component_ts_code", "props", "category", "tags"]
+                "required": ["name", "component_ts_code", "props", "category"]
             }
+            
             
             result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schema)
             
