@@ -39,8 +39,8 @@ class JsonSchemaDataGenerator:
         """
         self.completion_provider = completion_provider or LiteLLMCompletion()
         self.system_prompt = (
-            "You are a data generation expert specializing in creating realistic "
-            "JSON data that conforms to specific schemas."
+            "You are an expert Website Copywriter specializing in creating realistic"
+            " JSON data that conforms to specific schemas."
         )
 
     def generate_data(
