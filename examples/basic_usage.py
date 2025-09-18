@@ -104,11 +104,6 @@ interface HeroWithMockupProps {
   }
   className?: string
 }
-        # The ShadcnToTypeScriptConverter internally uses complete_with_json with json_schema
-        # to ensure consistent TypeScript interface generation
-        # result = converter.convert(component_code)
-        # print("Results are:")
-        # print(json.dumps(result, indent=2))
 
 export function HeroWithMockup({
   title,
@@ -226,6 +221,7 @@ export function HeroWithMockup({
     </section>
   )
 }
+
 """
 
         result = converter.convert(component_code)
