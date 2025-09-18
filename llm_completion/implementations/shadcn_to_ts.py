@@ -302,37 +302,3 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
         except Exception as e:
             logger.error(f"Failed to convert component to TypeScript: {str(e)}")
             raise
-    
-    def _extract_props_from_component(self, component_code: str, metadata: Dict[str, Any]) -> str:
-        """Extract props interface from component code if props file is missing.
-
-        Args:
-            component_code: TypeScript component code.
-            metadata: Component metadata.
-
-        Returns:
-            Props file content.
-        """
-        try:
-            # Try to find props interface in the component
-            props_pattern = r"(export\s+)?interface\s+(\w+Props)\s*\{[\s\S]+?\}"
-            props_match = re.search(props_pattern, component_code)
-            
-            if props_match:
-                props_content = props_match.group(0)
-                props_name = props_match.group(2)
-                
-                # Update metadata if props name is missing
-                if "props" not in metadata:
-                    metadata["props"] = props_name
-                
-                return f"export {props_content}"
-            
-            # If no props interface found, create a basic one based on metadata
-            props_name = metadata.get("props", "ComponentProps")
-            return f"export interface {props_name} {{\n  children?: React.ReactNode;\n}}"
-            
-        except Exception as e:
-            logger.warning(f"Error extracting props from component: {str(e)}")
-            props_name = metadata.get("props", "ComponentProps")
-            return f"export interface {props_name} {{\n  children?: React.ReactNode;\n}}"
