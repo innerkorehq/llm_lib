@@ -264,16 +264,16 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             "Remove default values. Props will handle those cases.\n"
             "Add Optional Background image and optional Background color props at top level.\n\n"
             f"```\n{component_code}\n\n```"
-            + ("Given following concrete example of above component. Create a variation code for it that will follow same guidelines as above and use above component as base with proper imports." if demo_code else "")
+            + ("Given following concrete variation of above component. Create a typescript variation code for it that will follow same guidelines as above and use above component as base with proper imports." if demo_code else "")
             + (f"\n```\n{demo_code}\n\n```" if demo_code else "")
-            + "Give only json for component ts code, component name, props_file_name, component props name, category and tags in following format,\n\n"
+            + "Give only json for component ts code, variation ts code (if applicable otherwise empty string) component name, props_file_name, component props name, category and tags in following format,\n\n"
             "{\n"
             '"name": "<component name>",\n'
             '"component_ts_code": "<component ts code>",\n'
             '"variation_ts_code": "<variation ts code>",\n'
             '"props": "<component props name>",\n'
             '"category": "<component category>",\n'
-            '"tags": "<comma separated component tags>"\n'
+            '"tags": [<component tags>]\n'
             "}\n"
         )
 

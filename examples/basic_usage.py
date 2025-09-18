@@ -228,9 +228,9 @@ export function HeroWithMockup({
 }
 """
 
-        # result = converter.convert(component_code)
-        # print("Results are:")
-        # print(json.dumps(result, indent=2))
+        result = converter.convert(component_code)
+        print("Results are:")
+        print(json.dumps(result, indent=2))
 
         # Landing page tags example
         
@@ -250,91 +250,91 @@ Description: MarketingKore is an AI marketing tool. That will provide landing pa
         
         
         # JSON generator example
-        print("\n===== JSON Generator =====")
-        generator = JsonSchemaDataGenerator()
-        component_schema = {
-          "badge": {
-            "type": "object",
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "action": {
-                "type": "object",
-                "properties": {
-                  "text": {
-                    "type": "string"
-                  },
-                  "href": {
-                    "type": "string"
-                  }
-                },
-                "required": ["text", "href"],
-                "additionalProperties": False
-              }
-            },
-            "required": ["text", "action"],
-            "additionalProperties": False
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "actions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "href": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "object",
-                  "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered.",
-                  "additionalProperties": False
-                },
-                "variant": {
-                  "enum": [
-                    "default",
-                    "glow"
-                  ],
-                  "type": "string"
-                }
-              },
-              "required": ["text", "href", "variant"],
-              "additionalProperties": False
-            }
-          },
-          "image": {
-            "type": "object",
-            "properties": {
-              "light": {
-                "type": "string"
-              },
-              "dark": {
-                "type": "string"
-              },
-              "alt": {
-                "type": "string"
-              }
-            },
-            "required": ["light", "dark", "alt"],
-            "additionalProperties": False
-          }
-        }
+        # print("\n===== JSON Generator =====")
+        # generator = JsonSchemaDataGenerator()
+        # component_schema = {
+        #   "badge": {
+        #     "type": "object",
+        #     "properties": {
+        #       "text": {
+        #         "type": "string"
+        #       },
+        #       "action": {
+        #         "type": "object",
+        #         "properties": {
+        #           "text": {
+        #             "type": "string"
+        #           },
+        #           "href": {
+        #             "type": "string"
+        #           }
+        #         },
+        #         "required": ["text", "href"],
+        #         "additionalProperties": False
+        #       }
+        #     },
+        #     "required": ["text", "action"],
+        #     "additionalProperties": False
+        #   },
+        #   "title": {
+        #     "type": "string"
+        #   },
+        #   "description": {
+        #     "type": "string"
+        #   },
+        #   "actions": {
+        #     "type": "array",
+        #     "items": {
+        #       "type": "object",
+        #       "properties": {
+        #         "text": {
+        #           "type": "string"
+        #         },
+        #         "href": {
+        #           "type": "string"
+        #         },
+        #         "icon": {
+        #           "type": "object",
+        #           "description": "Represents all of the things React can render.\n\nWhere {@link ReactElement} only represents JSX, `ReactNode` represents everything that can be rendered.",
+        #           "additionalProperties": False
+        #         },
+        #         "variant": {
+        #           "enum": [
+        #             "default",
+        #             "glow"
+        #           ],
+        #           "type": "string"
+        #         }
+        #       },
+        #       "required": ["text", "href", "variant"],
+        #       "additionalProperties": False
+        #     }
+        #   },
+        #   "image": {
+        #     "type": "object",
+        #     "properties": {
+        #       "light": {
+        #         "type": "string"
+        #       },
+        #       "dark": {
+        #         "type": "string"
+        #       },
+        #       "alt": {
+        #         "type": "string"
+        #       }
+        #     },
+        #     "required": ["light", "dark", "alt"],
+        #     "additionalProperties": False
+        #   }
+        # }
         
-        # This will internally use complete_with_json with the json_schema parameter
-        data = generator.generate_data(
-            component_schema,
-            "Create hero section for a landing page of oneclosure.com",
-            num_examples=1
-        )
-        print(json.dumps(data, indent=2))
+        # # This will internally use complete_with_json with the json_schema parameter
+        # data = generator.generate_data(
+        #     component_schema,
+        #     "Create hero section for a landing page of oneclosure.com",
+        #     num_examples=1
+        # )
+        # print(json.dumps(data, indent=2))
 
     except APIKeyError as e:
         print(f"API Key Error: {str(e)}")
