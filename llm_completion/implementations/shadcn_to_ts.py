@@ -152,7 +152,7 @@ Functional attributes:
 - `responsive-mobile`  
 - `responsive-desktop`  
 - `interactive` (Hover/click effects)  
-- `static`  
+- `static`
 - `dynamic-content` (API-driven)  
 - `lazy-loaded`  
 - `fixed-position`  
@@ -236,11 +236,12 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
 """
         )
 
-    def convert(self, component_code: str) -> Dict[str, Any]:
+    def convert(self, component_code: str, demo_code: str = None) -> Dict[str, Any]:
         """Convert a Shadcn component to TypeScript.
 
         Args:
             component_code: The React component code to convert.
+            demo_code: Optional demo code for the component.
 
         Returns:
             Tuple containing (typescript_component, props_file_content, metadata)
@@ -262,14 +263,17 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             "Replace any hardcoded user visible values (including href, alt, src, etc), demo data, mockups, etc with appropriate props types, if required.\n"
             "Remove default values. Props will handle those cases.\n"
             "Add Optional Background image and optional Background color props at top level.\n\n"
-            f"{component_code}\n\n"
-            "Give only json for component ts code, component name, props_file_name, component props name, category and tags in following format,\n\n"
+            f"```\n{component_code}\n\n```"
+            + ("Given following concrete example of above component. Create a variation code for it that will follow same guidelines as above and use above component as base with proper imports." if demo_code else "")
+            + (f"\n```\n{demo_code}\n\n```" if demo_code else "")
+            + "Give only json for component ts code, component name, props_file_name, component props name, category and tags in following format,\n\n"
             "{\n"
             '"name": "<component name>",\n'
             '"component_ts_code": "<component ts code>",\n'
+            '"variation_ts_code": "<variation ts code>",\n'
             '"props": "<component props name>",\n'
             '"category": "<component category>",\n'
-            '"tags": "<comma separated component tags>",\n'
+            '"tags": "<comma separated component tags>"\n'
             "}\n"
         )
 
@@ -280,11 +284,12 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
                 "properties": {
                     "name": {"type": "string"},
                     "component_ts_code": {"type": "string"},
+                    "variation_ts_code": {"type": "string"},
                     "props": {"type": "string"},
                     "category": {"type": "string"},
                     "tags": {"type": "array", "items": {"type": "string"}},
                 },
-                "required": ["name", "component_ts_code", "props", "category"]
+                "required": ["name", "component_ts_code", "props", "category", "tags"]
             }
             
             
