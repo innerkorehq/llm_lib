@@ -23,7 +23,9 @@ class ShadcnToTypeScriptConverter:
         self.system_prompt = (
             "You are a TypeScript expert specializing in React component conversion."
             """
-For Icon Components:
+Use following guidelines while converting shadcn components to typescript. Need to replace Icon, Image and Link components with proper usage as per guidelines below,
+
+For Icon Components :
     1. Following interface should be used:
         interface Icon {
         package: 'lucide';
