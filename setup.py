@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="llm-completion",
-    version="0.1.4",
+    version="0.1.5",
     author="innerkore",
     author_email="gagan@innerkore.com",
     description="A library for LLM text completion using LiteLLM",
@@ -22,7 +22,7 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        "litellm>=1.0.0",
+        "litellm==1.77.1",
         "tenacity>=8.2.0",  # Updated version
         "python-dotenv>=0.19.0",
         "jsonschema>=4.0.0",  # Added for schema validation
