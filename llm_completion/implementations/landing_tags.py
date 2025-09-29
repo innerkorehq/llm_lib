@@ -223,19 +223,25 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             
             # Define schema for the response
             schema = {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "category": {"type": "string"},
+                "type": "object",
+                "properties": {
+                    "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                        "category": { "type": "string" },
                         "tags": {
                             "type": "array",
-                            "items": {"type": "string"}
+                            "items": { "type": "string" }
                         }
-                    },
-                    "required": ["category", "tags"]
+                        },
+                        "required": ["category", "tags"]
+                    }
+                    }
+                },
+                "required": ["data"]
                 }
-            }
 
             
             result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schema)
@@ -244,5 +250,5 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             logger.error(f"API approach failed for finding landing page tags: {str(e)}")
             raise
 
-        return result['components'] if 'components' in result else result
+        return result['data'] if 'data' in result else result
 
