@@ -211,13 +211,12 @@ Always include a primary tag (called category), Marketing Purpose Tag, and 2-5 s
             prompt = (
                 f"As a UI/UX expert, select at least {count} components in sequence for a landing page from the following list.\n"
                 "Choose components that work well together for a modern, effective landing page.\n"
-                "Format your response as a JSON object containing component names as keys and their categories as values.\n\n"
-                # f"Available components: {json.dumps(components)}\n\n"
+                "Format your response as a JSON array.\n\n"
                 f"User Input: {user_input}\n\n"
                 "Remember to:\n"
                 f"1. Select at least {count} components\n"
                 "2. Choose components that logically work together\n"
-                "3. Return only a valid JSON object of component names\n\n"
+                "3. Return only a valid JSON array of categories & tags\n\n"
                 "4. It should return category_tags_map: List of dict mapping category and tags e.g.\n"
                 "[{category: category1, tags: [tag1, tag2]}, {category: category2, tags: [tag3, tag4]}, ...]\n"
             )
