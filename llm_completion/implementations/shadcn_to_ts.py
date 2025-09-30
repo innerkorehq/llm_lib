@@ -31,13 +31,12 @@ For Icon Components :
         package: 'lucide';
         name: string; // known lucide react icon-name only
         type: 'icon';
-        className: string; // tailwind classes for styling
         }
     2. Following will be the usage example:
     
         import DynamicIcon from "@/components/DynamicIcon";
-        
-        <DynamicIcon name="Home" className="my-tailwind-classes" />
+
+        <DynamicIcon name="Home" className="<retain className of original component>" />
 
 For Image Components:
     1. Following interface should be used:
@@ -50,7 +49,6 @@ For Image Components:
             quality?: number;
             sizes?: string;
             fill?: boolean;
-            className?: string;
             placeholder?: string;
         }
     2. Following will be the usage example:
@@ -62,7 +60,7 @@ For Image Components:
             alt="Description of image"
             width={500}
             height={300}
-            className="my-tailwind-classes"
+            className="<retain className of original component>"
             placeholder="placeholder text"
         />
 
@@ -71,12 +69,11 @@ For Link Components:
         interface LinkProps {
             href: string;
             target?: '_blank' | '_self';
-            className?: string;
             rel?: string;
         }
     2. Every Anchor tag should use the following structure:
         import Link from "@/components/Link";
-        <Link href="your-link-here" className="your-tailwind-classes" target="_blank" rel="noopener noreferrer">
+        <Link href="your-link-here" className="<retain className of original component>" target="_blank" rel="noopener noreferrer">
         </Link>
 """
 """

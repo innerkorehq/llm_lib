@@ -64,14 +64,14 @@ class JsonSchemaDataGenerator:
         """
         logger.info(f"Generating data for {len(schemas.keys())} schemas")
 
-        icons = {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        }
+        # icons = {
+        #     "type": "array",
+        #     "items": {
+        #         "type": "string"
+        #     }
+        # }
 
-        schemas["icons"] = icons
+        # schemas["icons"] = icons
 
         # merged_schema = merge_schemas(schemas)
         # print("merged_schema:", merged_schema)
@@ -80,9 +80,11 @@ class JsonSchemaDataGenerator:
         prompt = (
             f"Generate {num_examples} examples of JSON data"
             f"Additional requirements: \n{user_prompt}\n\n"
-            "Fill image assets with Unsplash stock images you know exist.\n"
+            "Don't fill Background image & Background color unless asked for it.\n"
+            "We are generating data for Landing pages so repeat minimally only if required.\n"
+            "Fill image assets with Unsplash/Pexels/Pixabay stock images you know exist.\n"
             "Only use known icons from `lucide-react`.\n\n"
-            "icons will contain all the icons used in the JSON data."
+            # "icons will contain all the icons used in the JSON data."
             "Return ONLY valid JSON data that matches the schema(s) provided."
         )
 
@@ -91,7 +93,7 @@ class JsonSchemaDataGenerator:
             print("prompt:", prompt)
 
             result = self.completion_provider.complete_with_json(prompt, self.system_prompt, json_schema=schemas)
-            print("Generated JSON data:", result)            
+            print("Generated JSON data:", result)
             
             # Process the data to ensure all image and icon fields are properly formatted
             # processed_result = self._process_generated_data(result)
