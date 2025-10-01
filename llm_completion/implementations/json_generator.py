@@ -96,13 +96,52 @@ class JsonSchemaDataGenerator:
             print("Generated JSON data:", result)
             
             # Process the data to ensure all image and icon fields are properly formatted
-            # processed_result = self._process_generated_data(result)
+            processed_result = self._process_generated_data(result)
             
             logger.info("Successfully generated data")
 
-            return result
+            return processed_result
 
         except Exception as e:
             logger.error(f"Failed to generate JSON data: {str(e)}")
             raise
+            
+    def _process_generated_data(self, data: Any) -> Any:
+        """Process the generated data to format icons and other fields correctly.
+        
+        Args:
+            data: The generated data structure
+            
+        Returns:
+            Processed data structure
+        """
+        # Process data and transform icon names
+        self._process_data_recursive(data)
+        return data
+    
+    def _process_data_recursive(self, data):
+        """
+        Recursively process data structure to find and update icon names.
+        
+        Args:
+            data: Any data structure (dict, list, etc.) to process
+        """
+        if isinstance(data, dict):
+            # Check if this dict matches the Icon interface
+            if (data.get('package') == 'lucide' and 
+                data.get('type') == 'icon' and 
+                'name' in data and 
+                isinstance(data['name'], str)):
+                # Transform hyphenated icon names to title case (e.g., "check-circle" -> "CheckCircle")
+                icon_name = data['name']
+                data['name'] = ''.join(x.title() for x in icon_name.split('-'))
+            
+            # Process all values
+            for value in data.values():
+                self._process_data_recursive(value)
+                
+        elif isinstance(data, list):
+            # Process all list items
+            for item in data:
+                self._process_data_recursive(item)
     
